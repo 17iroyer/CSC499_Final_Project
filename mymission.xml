@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <About>
+    <Summary>A basic agent to test with</Summary>
+  </About>
+  <ModSettings>
+    <MsPerTick>50</MsPerTick>
+  </ModSettings>
+  <ServerSection>
+      <ServerInitialConditions>
+            <Time>
+                <StartTime>1000</StartTime>
+                <AllowPassageOfTime>false</AllowPassageOfTime>
+           </Time>
+           <Weather>clear</Weather>
+            <AllowSpawning>false</AllowSpawning>
+     </ServerInitialConditions>
+    <ServerHandlers>
+      <FlatWorldGenerator generatorString="3;7,2*3,79;1;village"/>
+      <ServerQuitFromTimeUp timeLimitMs="10000"/>
+      <ServerQuitWhenAnyAgentFinishes/>
+    </ServerHandlers>
+  </ServerSection>
+
+  <AgentSection mode = "Survival">
+    <Name>My Boy Da Agent</Name>
+    <AgentStart>
+      <Placement x="1.0" y="7.0" z="1.0"/>
+    </AgentStart>
+    <AgentHandlers>
+      <ObservationFromFullStats/>
+      <ObservationFromFullInventory flat="false"/>
+      <ObservationFromRay/>
+      <MissionQuitCommands/>
+      <InventoryCommands/>
+      <AbsoluteMovementCommands/>
+      <DiscreteMovementCommands/>
+    </AgentHandlers>
+  </AgentSection>
+</Mission>
