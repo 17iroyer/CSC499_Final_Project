@@ -1,7 +1,7 @@
 //Ian Royer
 //Basic agent class used by IAL and JAL
-//Created: 8-31-2020
-//Updated: 8-31-2020
+//Created: 8/31/2020
+//Updated: 8/31/2020
 
 public class Agent {
 
