@@ -1,13 +1,8 @@
 //Ian Royer
-//IAL agent class
+//IAL Agent class
 //Created: 8/24/2020
-//Updated: 8/25/2020
+//Updated: 8/31/2020
 
-public class Ial {
-    
-  public String name; 
-
-  public Ial(String name) {
-      this.name = name;
-  }
+public class Ial extends Agent {
+  
 }

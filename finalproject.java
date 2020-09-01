@@ -3,16 +3,17 @@
 //Created: 8/24/2020
 //Updated: 8/26/2020
 
-//Compile:   javac -cp MalmoJavaJar.jar finalproject.java
-//Run:       java -cp MalmoJavaJar.jar;. finalproject
+//Compile:   javac -cp malmojavajar.jar;gson-2.8.6.jar finalproject.java
+//Run:       java -cp malmojavajar.jar;gson-2.8.6.jar;. finalproject
 
 import com.microsoft.msr.malmo.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.Scanner;
+import com.google.gson.*;
 
-public class mayialandjal {
+public class finalproject {
   static {
     System.loadLibrary("MalmoJava");
   }
@@ -21,7 +22,7 @@ public class mayialandjal {
       
     //Sets the mission XML file
     Scanner scan = new Scanner(new File("./mymission.xml"));
-    scan.useDelimeter("\\Z");
+    scan.useDelimiter("\\Z");
 
     //Set up two agents to use
     //World state should be the same for each, so update world state
@@ -53,14 +54,14 @@ public class mayialandjal {
     do{
       System.out.print(".");
       try{
-        thread.sleep(1000);
+        Thread.sleep(1000);
       } catch(InterruptedException ex) {
         System.err.println("User stopped the mission from starting");
         return;
       }
 
       curworldstate = agenthost1.getWorldState();
-      for(int i=0, i<curworldstate.getErrors().size(); i++) {
+      for(int i=0; i<curworldstate.getErrors().size(); i++) {
         System.err.println("Error: " + curworldstate.getErrors().get(i).getText());
       }
     } while(!curworldstate.getIsMissionRunning());
@@ -74,7 +75,7 @@ public class mayialandjal {
 
     }while(curworldstate.getIsMissionRunning());
 
-    System.our.println("The mission is done");
+    System.out.println("The mission is done");
   }
 
 
