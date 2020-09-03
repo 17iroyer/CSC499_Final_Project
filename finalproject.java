@@ -1,7 +1,7 @@
 //Ian Royer
 //Runner class for Multiagent Q-learning 
 //Created: 8/24/2020
-//Updated: 8/26/2020
+//Updated: 9/2/2020
 
 //Compile:   javac -cp malmojavajar.jar;gson-2.8.6.jar finalproject.java
 //Run:       java -cp malmojavajar.jar;gson-2.8.6.jar;. finalproject
