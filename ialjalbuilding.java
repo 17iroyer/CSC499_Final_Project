@@ -3,14 +3,14 @@
 //Created: 9/2/20
 //Updated: 9/2/20
 
-public class ialjalbuilding {
+public class Ialjalbuilding {
 
   private Ial myIal;
   private Jal myJal;
   private int learnTrials;
 
   //Constructor assigning agents to the mission
-  public ialjalbuilding(Ial myIal, Jal myJal, int buildSize, int buildHeight) {
+  public Ialjalbuilding(Ial myIal, Jal myJal, int buildSize, int buildHeight) {
     this.myIal = myIal;
     this.myJal = myJal;
   }

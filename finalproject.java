@@ -11,11 +11,66 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.Scanner;
-import com.google.gson.*;
+//import com.google.gson.*;
 
 public class finalproject {
   static {
     System.loadLibrary("MalmoJava");
+  }
+  
+  public static void safeMissionStart(AgentHost theagent, MissionSpec themission, ClientPool thepool, MissionRecordSpec therecord, int therole, String expid) {
+    int starttries = 0;
+    int maxtries = 5;
+
+    while(starttries < maxtries) {
+      try {
+        theagent.startMission(themission, thepool, therecord, therole, expid);
+      } catch(MissionException e) {
+        if(e.getMissionErrorCode() == MissionException.MissionErrorCode.MISSION_SERVER_WARMING_UP) {
+          System.out.println("Server is warming up. We'll wait...");
+          try {
+            Thread.sleep(2);
+          } catch(InterruptedException ex) {
+            System.out.println("Interrupted");
+          }
+        }
+        else if(e.getMissionErrorCode() == MissionException.MissionErrorCode.MISSION_INSUFFICIENT_CLIENTS_AVAILABLE) {
+          System.out.println("Not enough Minecraft instances running");
+          starttries++;
+          if(starttries < maxtries) {
+            System.out.println("Waiting to see if they're warming up...");
+            try{
+              Thread.sleep(2);
+            } catch(InterruptedException ex) {
+              System.out.println("Interrupted");
+            }
+          }
+        }
+        else if(e.getMissionErrorCode() == MissionException.MissionErrorCode.MISSION_SERVER_NOT_FOUND) {
+          System.out.println("Server not found. Mission w/ role 0 hasn't been started?");
+          starttries++;
+          if(starttries < maxtries) {
+            System.out.println("Waiting and will try again");
+            try {
+              Thread.sleep(2);
+            } catch(InterruptedException ex) {
+              System.out.println("Interrupted");
+            }
+          }
+        }
+        else {
+          System.out.println("other error: " + e.getMessage());
+          System.exit(0);
+        }
+      }
+
+      if(starttries > maxtries) {
+        System.out.println("All tries used, exiting");
+        System.exit(0);
+      }
+    }
+
+    System.out.println("StartMission Called...");
   }
 
   public static void main(final String argv[]) throws Exception {
@@ -30,24 +85,29 @@ public class finalproject {
     AgentHost agenthost1 = new AgentHost();
     AgentHost agenthost2 = new AgentHost();
     MissionSpec mymissionspec = new MissionSpec(scan.next(), true);
-    MissionRecordSpec mymissionrecord = new MissionRecordSpec("./missiondata.tgz");
-    mymissionrecord.recordCommands();
-    mymissionrecord.recordObservations();
-    WorldState curworldstate;
+
+    ClientPool mypool = new ClientPool();
+    ClientInfo info1 = new ClientInfo("127.0.0.1", 10000);
+    ClientInfo info2 = new ClientInfo("127.0.0.1", 10001);
+    mypool.add(info1);
+    mypool.add(info2);
+
+    MissionRecordSpec mymissionrecord1 = new MissionRecordSpec("./missiondata1.tgz");
+    mymissionrecord1.recordCommands();
+    mymissionrecord1.recordObservations();
+
+    MissionRecordSpec mymissionrecord2 = new MissionRecordSpec("./missiondata2.tgz");
+    mymissionrecord2.recordCommands();
+    mymissionrecord2.recordObservations();
+
+    WorldState curworldstate1;
+    WorldState curworldstate2;
 
     //Try to start the mission
-    try{
-      agenthost1.startMission(mymissionspec, mymissionrecord);
-      agenthost2.startMission(mymissionspec, mymissionrecord);
-    } catch(MissionException e) {
-      System.err.println("Error in starting: " + e.getMessage());
-      System.err.println("Error code: " + e.getMissionErrorCode());
-
-      if (e.getMissionErrorCode() == MissionException.MissionErrorCode.MISSION_INSUFFICIENT_CLIENTS_AVAILABLE) {
-        System.err.println("No client running");
-      }
-      System.exit(0);
-    }
+    safeMissionStart(agenthost1, mymissionspec, mypool, mymissionrecord1, 0, "");
+    safeMissionStart(agenthost2, mymissionspec, mypool, mymissionrecord2, 1, "");
+    //agenthost1.startMission(mymissionspec, mypool, mymissionrecord, 0, "");
+    //agenthost2.startMission(mymissionspec, mypool, mymissionrecord, 1, "");
 
     //Wait for the mission to start
     System.out.print("Mission is starting");
@@ -60,23 +120,35 @@ public class finalproject {
         return;
       }
 
-      curworldstate = agenthost1.getWorldState();
-      for(int i=0; i<curworldstate.getErrors().size(); i++) {
-        System.err.println("Error: " + curworldstate.getErrors().get(i).getText());
+      curworldstate1 = agenthost1.getWorldState();
+      curworldstate2 = agenthost2.getWorldState();
+      for(int i=0; i<curworldstate1.getErrors().size(); i++) {
+        System.err.println("Error: " + curworldstate1.getErrors().get(i).getText());
       }
-    } while(!curworldstate.getIsMissionRunning());
+      for(int i=0; i<curworldstate2.getErrors().size(); i++) {
+        System.err.println("Error: " + curworldstate2.getErrors().get(i).getText());
+      }
+    } while(!curworldstate1.getIsMissionRunning() && !curworldstate2.getIsMissionRunning());
     System.out.println("");
 
     System.out.println("Mission has started");
 
     //Rest of the actions go below here
     //Or take out the loop
-    do{
+    //Ial myIal = new Ial("The IAL", -1, 8, -1, 2, 1, agenthost1);
+    //Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
+    //Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
 
-    }while(curworldstate.getIsMissionRunning());
+    do {
+      agenthost1.sendCommand("move 1");
+      agenthost1.sendCommand("jump 1");
+      agenthost2.sendCommand("move 1");
+      agenthost2.sendCommand("jump 1");
+      curworldstate1 = agenthost1.getWorldState();
+      curworldstate2 = agenthost2.getWorldState();
+    }while(curworldstate1.getIsMissionRunning() && curworldstate2.getIsMissionRunning());
 
     System.out.println("The mission is done");
   }
-
 
 }

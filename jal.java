@@ -3,10 +3,12 @@
 //Created: 8/24/2020
 //Updated: 9/2/2020
 
+import com.microsoft.msr.malmo.*;
+
 public class Jal extends Agent {
   
   //Constructor for a basic agent
-  public jal(String name, int x, int y, int z, int buildSize, int buildHeight, AgentHost host) {
+  public Jal(String name, int x, int y, int z, int buildSize, int buildHeight, AgentHost host) {
     this.name = name;
     this.startx = x;
     this.starty = y;

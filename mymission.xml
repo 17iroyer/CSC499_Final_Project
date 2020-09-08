@@ -25,7 +25,7 @@
   <AgentSection mode = "Survival">
     <Name>Agent 1</Name>
     <AgentStart>
-      <Placement x="1.0" y="7.0" z="1.0"/>
+      <Placement x="2.0" y="7.0" z="1.0"/>
     </AgentStart>
     <AgentHandlers>
       <ObservationFromFullStats/>
