@@ -25,11 +25,12 @@ public class finalproject {
     while(starttries < maxtries) {
       try {
         theagent.startMission(themission, thepool, therecord, therole, expid);
+        break;
       } catch(MissionException e) {
         if(e.getMissionErrorCode() == MissionException.MissionErrorCode.MISSION_SERVER_WARMING_UP) {
           System.out.println("Server is warming up. We'll wait...");
           try {
-            Thread.sleep(2);
+            Thread.sleep(1000);
           } catch(InterruptedException ex) {
             System.out.println("Interrupted");
           }
@@ -40,7 +41,7 @@ public class finalproject {
           if(starttries < maxtries) {
             System.out.println("Waiting to see if they're warming up...");
             try{
-              Thread.sleep(2);
+              Thread.sleep(1000);
             } catch(InterruptedException ex) {
               System.out.println("Interrupted");
             }
@@ -52,7 +53,7 @@ public class finalproject {
           if(starttries < maxtries) {
             System.out.println("Waiting and will try again");
             try {
-              Thread.sleep(2);
+              Thread.sleep(1000);
             } catch(InterruptedException ex) {
               System.out.println("Interrupted");
             }
@@ -85,12 +86,16 @@ public class finalproject {
     AgentHost agenthost1 = new AgentHost();
     AgentHost agenthost2 = new AgentHost();
     MissionSpec mymissionspec = new MissionSpec(scan.next(), true);
+    scan.close();
 
     ClientPool mypool = new ClientPool();
     ClientInfo info1 = new ClientInfo("127.0.0.1", 10000);
     ClientInfo info2 = new ClientInfo("127.0.0.1", 10001);
     mypool.add(info1);
     mypool.add(info2);
+
+    //Logger mylog = getLogger();
+    //mylog.setLogging("", getLogger().LogginSeverityLevel.LOG_OFF);
 
     MissionRecordSpec mymissionrecord1 = new MissionRecordSpec("./missiondata1.tgz");
     mymissionrecord1.recordCommands();
@@ -106,6 +111,21 @@ public class finalproject {
     //Try to start the mission
     safeMissionStart(agenthost1, mymissionspec, mypool, mymissionrecord1, 0, "");
     safeMissionStart(agenthost2, mymissionspec, mypool, mymissionrecord2, 1, "");
+
+    curworldstate1 = agenthost1.getWorldState();
+    curworldstate2 = agenthost2.getWorldState();
+    for(int i=0; i<curworldstate1.getErrors().size(); i++) {
+      System.err.println("Error: " + curworldstate1.getErrors().get(i).getText());
+    }
+    for(int i=0; i<curworldstate2.getErrors().size(); i++) {
+      System.err.println("Error: " + curworldstate2.getErrors().get(i).getText());
+    }
+
+    // while(!curworldstate1.getHasMissionBegun() && !curworldstate2.getHasMissionBegun()) {
+    //   System.out.println("Waiting for both agent missions to start");
+    //   curworldstate1 = agenthost1.getWorldState();
+    //   curworldstate2 = agenthost2.getWorldState();
+    // }
     //agenthost1.startMission(mymissionspec, mypool, mymissionrecord, 0, "");
     //agenthost2.startMission(mymissionspec, mypool, mymissionrecord, 1, "");
 
@@ -119,34 +139,30 @@ public class finalproject {
         System.err.println("User stopped the mission from starting");
         return;
       }
-
       curworldstate1 = agenthost1.getWorldState();
       curworldstate2 = agenthost2.getWorldState();
-      for(int i=0; i<curworldstate1.getErrors().size(); i++) {
-        System.err.println("Error: " + curworldstate1.getErrors().get(i).getText());
-      }
-      for(int i=0; i<curworldstate2.getErrors().size(); i++) {
-        System.err.println("Error: " + curworldstate2.getErrors().get(i).getText());
-      }
     } while(!curworldstate1.getIsMissionRunning() && !curworldstate2.getIsMissionRunning());
-    System.out.println("");
+    System.out.println("");      
 
     System.out.println("Mission has started");
 
     //Rest of the actions go below here
     //Or take out the loop
-    //Ial myIal = new Ial("The IAL", -1, 8, -1, 2, 1, agenthost1);
-    //Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
-    //Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
+    Ial myIal = new Ial("The IAL", -1, 8, -1, 2, 1, agenthost1);
+    Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
+    Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
 
-    do {
-      agenthost1.sendCommand("move 1");
-      agenthost1.sendCommand("jump 1");
-      agenthost2.sendCommand("move 1");
-      agenthost2.sendCommand("jump 1");
-      curworldstate1 = agenthost1.getWorldState();
-      curworldstate2 = agenthost2.getWorldState();
-    }while(curworldstate1.getIsMissionRunning() && curworldstate2.getIsMissionRunning());
+    myIal.resetPos();
+    myJal.resetPos();
+
+    //do {
+    //   agenthost1.sendCommand("tp 2 4 5");
+    //   agenthost1.sendCommand("jump 1");
+    //   agenthost2.sendCommand("move 1");
+    //   agenthost2.sendCommand("jump 1");
+    //  curworldstate1 = agenthost1.getWorldState();
+    //  curworldstate2 = agenthost2.getWorldState();
+    // }while(curworldstate1.getIsMissionRunning() && curworldstate2.getIsMissionRunning());
 
     System.out.println("The mission is done");
   }

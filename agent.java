@@ -35,7 +35,7 @@ public class Agent {
 
   //Looks at the block at location and returns name of it
   public String lookBlock(int x, int z) {
-    return "blah";
+    return "this is a block";
   }
 
   //Returns the name of the agent
