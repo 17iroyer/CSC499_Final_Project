@@ -11,7 +11,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.Scanner;
-//import com.google.gson.*;
+import com.google.gson.*;
 
 public class finalproject {
   static {
@@ -94,8 +94,7 @@ public class finalproject {
     mypool.add(info1);
     mypool.add(info2);
 
-    //Logger mylog = getLogger();
-    //mylog.setLogging("", getLogger().LogginSeverityLevel.LOG_OFF);
+    Gson mygson = new Gson();
 
     MissionRecordSpec mymissionrecord1 = new MissionRecordSpec("./missiondata1.tgz");
     mymissionrecord1.recordCommands();
@@ -121,14 +120,6 @@ public class finalproject {
       System.err.println("Error: " + curworldstate2.getErrors().get(i).getText());
     }
 
-    // while(!curworldstate1.getHasMissionBegun() && !curworldstate2.getHasMissionBegun()) {
-    //   System.out.println("Waiting for both agent missions to start");
-    //   curworldstate1 = agenthost1.getWorldState();
-    //   curworldstate2 = agenthost2.getWorldState();
-    // }
-    //agenthost1.startMission(mymissionspec, mypool, mymissionrecord, 0, "");
-    //agenthost2.startMission(mymissionspec, mypool, mymissionrecord, 1, "");
-
     //Wait for the mission to start
     System.out.print("Mission is starting");
     do{
@@ -152,17 +143,43 @@ public class finalproject {
     Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
     Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
 
+    
+
     myIal.resetPos();
     myJal.resetPos();
 
+    curworldstate1 = agenthost1.peekWorldState();
+    System.out.println(curworldstate1.getNumberOfObservationsSinceLastState());
+
+    curworldstate1 = agenthost1.getWorldState();
+
+    //TimestampedStringVector myobs = curworldstate1.getObservations();
+    //String myobsstring = myobs.get(0).getText();
+    //System.out.println(myobsstring);
+    //System.out.println(mygson.fromJson(curworldstate1.getObservations(), String.class));
+
     //do {
-    //   agenthost1.sendCommand("tp 2 4 5");
+       //myIal.sendCommand("tp 2 4 5");
+       myIal.sendCommand("setPitch 90");
     //   agenthost1.sendCommand("jump 1");
     //   agenthost2.sendCommand("move 1");
     //   agenthost2.sendCommand("jump 1");
     //  curworldstate1 = agenthost1.getWorldState();
     //  curworldstate2 = agenthost2.getWorldState();
     // }while(curworldstate1.getIsMissionRunning() && curworldstate2.getIsMissionRunning());
+
+    while(curworldstate1.getNumberOfObservationsSinceLastState() == 0)
+      curworldstate1 = agenthost1.peekWorldState();
+    System.out.println(curworldstate1.getNumberOfObservationsSinceLastState());
+    TimestampedStringVector myobs = curworldstate1.getObservations();
+    String myobsstr = curworldstate1.getObservations().get(0).getText();
+    System.out.println(myobsstr);
+
+    System.out.println(myIal.lookBlock(0,0,0));
+    Thread.sleep(30);
+    myIal.moveToHand(myIal.searchHandWood("oak"));
+    Thread.sleep(50);
+    myIal.placeBlock(2, 1);
 
     System.out.println("The mission is done");
   }

@@ -9,6 +9,7 @@ public class Agent {
 
   protected String name;
   public AgentHost host;
+  public WorldState myWorld;
   protected int startx, starty, startz;
   protected int buildSize, buildHeight;
   protected float[] mov0_0, mov1_0, mov2_0,
@@ -25,22 +26,45 @@ public class Agent {
                   plau0_2, plau1_2, plau2_2;
   protected float alpha = (float) 0.8;
 
-  //Places currently held block at location
-  public void placeBlock(int x, int z){
-    host.sendCommand("tp " + x + " 8 " + z);
-    host.sendCommand("hotbar.0 1");     //Make sure the hotbar is in position 0
-    host.sendCommand("hotbar.0 0");
-    host.sendCommand("use");
+  enum BlockPlace {
+    WHITE, ORANGE, MAGENTA, LIGHTB, YELLOW, LIME,
+    PINK, GRAY, LIGHTG, CYAN, PURPLE, BLUE,
+    BROWN, GREEN, RED, BLACK, OAK, SPRUCE;
   }
 
-  //Looks at the block at location and returns name of it
-  public String lookBlock(int x, int z) {
-    return "this is a block";
+  //Places currently held block at location
+  public void placeBlock(int x, int z){
+    host.sendCommand("tp " + x + " 7 " + z);
+    wait(500);
+    host.sendCommand("jumpuse");
+    resetPos();
+  }
+
+  //Looks at the block at relative location and returns name of it
+  //Level 0 = first layer, 1 = second
+  public String lookBlock(int x, int level, int z) {
+    waitForObs();
+    String observ = myWorld.getObservations().get(0).getText();
+    
+    String grid = observ.substring(observ.indexOf("\"build\":[") + 10);     //Find grid of blocks
+    grid = grid.substring(0, grid.length() - 3);
+
+    String[] blockArray = new String[18];                 //Split Json string into array of blocks
+    blockArray = grid.split("\",\"");
+    
+    int arrayPos = ((x+1) * (z+1)) + (level*9);         //Calculate array position based on input
+
+    return blockArray[arrayPos];                        //Return name of block in position
   }
 
   //Returns the name of the agent
   public String getName() {
     return name;
+  }
+
+  //Included for testing and future development
+  public void sendCommand(String command) {
+    host.sendCommand(command);
   }
 
   //Moves the agent back to it's designated starting position
@@ -57,7 +81,48 @@ public class Agent {
   //Search the agent's inventory for the respective block,
   // and return the inventory number it is in
   // (Should be used with movetohand)
-  public int searchHand(String block) {
-    return 0;
+  public int searchHandWool(String colour) {
+    
+    waitForObs();
+    String observ = myWorld.getObservations().get(0).getText();
+
+    String inventorystr = observ.substring(observ.indexOf(colour) + colour.length() + 24);
+    inventorystr = inventorystr.substring(0, inventorystr.indexOf(","));
+
+    return Integer.parseInt(inventorystr);
+  }
+
+  //Will search the agent's inventory space for a wood block
+  //  of a specified type
+  public int searchHandWood(String type) {
+    waitForObs();
+    String observ = myWorld.getObservations().get(0).getText();
+
+    String inventorystr = observ.substring(observ.indexOf(type) + type.length() + 26);
+    inventorystr = inventorystr.substring(0, inventorystr.indexOf(","));
+
+    return Integer.parseInt(inventorystr);
+  }
+
+  //Waits while the agent has time to process an observation if there isn't one ready
+  public void waitForObs() {
+    while(host.peekWorldState().getNumberOfObservationsSinceLastState() == 0) {
+      wait(50);
+    }
+    myWorld = host.getWorldState();
+  }
+
+  //Remove a block
+  public void removeBlock(int x, int y, int z) {
+    host.sendCommand("chat /setblock "+x+" "+y+" "+z+" air");
+  }
+
+  //Calls thread.sleep() for readability
+  private void wait(int ms) {
+    try {
+      Thread.sleep(ms);
+    } catch(Exception e) {
+      System.out.println("Interrupted");
+    }
   }
 }
