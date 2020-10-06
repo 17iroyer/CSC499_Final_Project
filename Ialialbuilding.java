@@ -1,17 +1,16 @@
 //Ian Royer
-//class for an IAL/JAL mission
-//Created: 9/2/20
-//Updated: 9/29/20
+//Made: 10-5-2020
+//Mission for building with two Ial agents
 
-public class Ialjalbuilding extends Buildmission {
+public class Ialialbuilding extends Buildmission {
 
   private Ial myIal;
-  private Jal myJal;
+  private Ial my2Ial;
 
   //Constructor assigning agents to the mission
-  public Ialjalbuilding(Ial myIal, Jal myJal, int buildSize, int buildHeight) {
+  public Ialialbuilding(Ial myIal, Ial my2Ial, int buildSize, int buildHeight) {
     this.myIal = myIal;
-    this.myJal = myJal;
+    this.my2Ial = my2Ial;
     this.buildSize = buildSize;
     this.buildHeight = buildHeight;
   }
@@ -41,8 +40,6 @@ public class Ialjalbuilding extends Buildmission {
         myIal.updateQtable(myIal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz), 
                            action, getRplaceTable(myIal));                  //Ial updates table
         checkTable = getRplaceTable(myIal);
-        myJal.updateQtable(myJal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz),
-                           action, getRplaceTable(myJal));                  //Update JAL table too
 
         if((int) checkTable[action] != 10) {                                //Check if placement was wrong, if so, remove it
           myIal.removeBlock(myIal.locx, 4 + (myIal.locy), myIal.locz);
@@ -51,34 +48,32 @@ public class Ialjalbuilding extends Buildmission {
       else if(myIal.myState == Agent.State.MOVE) {
         myIal.updateQtable(myIal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
                           action, getRmoveTable(myIal));                    //Ial updates table
-        checkTable = getRmoveTable(myIal);
-        myJal.updateQtable(myJal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
-                          action, getRmoveTable(myJal));                    //Update JAL table too
       }
       
       //********************************************************************************************************************************************************
-      //Do a JAL action
-      if(myJal.lookBlock(myJal.locx, myJal.locy, myJal.locz) == "air") {      //Assess current location and change state accordingly
-        myJal.myState = Agent.State.PLACE;
+      //Do a 2IAL action
+      if(my2Ial.lookBlock(my2Ial.locx, my2Ial.locy, my2Ial.locz) == "air") {      //Assess current location and change state accordingly
+        my2Ial.myState = Agent.State.PLACE;
       } else {
-        myJal.myState = Agent.State.MOVE;
+        my2Ial.myState = Agent.State.MOVE;
       }
 
       System.out.println("Checked spot JAL");
 
       //Given current state... do an action
       action = getRandAction();
-      myJal.doAction(action);                                                       //Jal does an action
-      if(myJal.myState == Agent.State.PLACE) {
-        myJal.updateQtable(myJal.getPlaceTable(myJal.locx, myJal.locy, myJal.locz),
-                          action, getRplaceTable(myJal));                           //Jal updates table
+      my2Ial.doAction(action);                                                       //2Ial does an action
+      if(my2Ial.myState == Agent.State.PLACE) {
+        my2Ial.updateQtable(my2Ial.getPlaceTable(my2Ial.locx, my2Ial.locy, my2Ial.locz),
+                          action, getRplaceTable(my2Ial));                           //2Ial updates table
+        checkTable = getRplaceTable(my2Ial);
         
         if((int) checkTable[action] != 10) {                                        //Check if placement was wrong, if so, remove it
-          myJal.removeBlock(myJal.locx, 4 + (myJal.locy), myJal.locz);
+          my2Ial.removeBlock(my2Ial.locx, 4 + (my2Ial.locy), my2Ial.locz);
         }
-      } else if(myJal.myState == Agent.State.MOVE) {
-        myJal.updateQtable(myJal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
-                          action, getRmoveTable(myJal));                            //Jal updates table
+      } else if(my2Ial.myState == Agent.State.MOVE) {
+        my2Ial.updateQtable(my2Ial.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
+                          action, getRmoveTable(my2Ial));                            //2Ial updates table
       }
 
       if(checkDone()) {
@@ -110,19 +105,19 @@ public class Ialjalbuilding extends Buildmission {
       System.out.println("IAL action done");
 
 
-      //Do a JAL action *****************************************************************************************************************
-      if(myJal.lookBlock(myJal.locx, myJal.locy, myJal.locz) == "air") {      //Assess current location and change state accordingly
-        myJal.myState = Agent.State.PLACE;
+      //Do a 2IAL action *****************************************************************************************************************
+      if(my2Ial.lookBlock(my2Ial.locx, my2Ial.locy, my2Ial.locz) == "air") {      //Assess current location and change state accordingly
+        my2Ial.myState = Agent.State.PLACE;
       } else {
-        myJal.myState = Agent.State.MOVE;
+        my2Ial.myState = Agent.State.MOVE;
       }
 
-      if(myJal.myState == Agent.State.PLACE) 
-        curTable = myJal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz);
-      else if(myJal.myState == Agent.State.MOVE) 
-        curTable = myJal.getMoveTable(myJal.locx, myJal.locy, myJal.locz);
+      if(my2Ial.myState == Agent.State.PLACE) 
+        curTable = my2Ial.getPlaceTable(myIal.locx, myIal.locy, myIal.locz);
+      else if(my2Ial.myState == Agent.State.MOVE) 
+        curTable = my2Ial.getMoveTable(my2Ial.locx, my2Ial.locy, my2Ial.locz);
       
-      myJal.doAction(getMaxIndex(curTable));
+      my2Ial.doAction(getMaxIndex(curTable));
       System.out.println("JAL action done");
     }
 
@@ -157,8 +152,7 @@ public class Ialjalbuilding extends Buildmission {
     }
 
     myIal.locx = 0; myIal.locy = 0; myIal.locz = 0;
-    myJal.locx = 0; myJal.locy = 0; myJal.locz = 0;
+    my2Ial.locx = 0; my2Ial.locy = 0; my2Ial.locz = 0;
   }
-  
 
 }

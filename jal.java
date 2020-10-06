@@ -38,10 +38,12 @@ public class Jal extends Agent {
       plau2_0 = new float[18]; plau2_1 = new float[18]; plau0_2 = new float[18];
       plau1_2 = new float[18]; plau2_2 = new float[18];
     }
+
+    myTable = pla0_0;
   }
 
   //Will update the table according to the appropriate action taken and reward
-  public void updateQtable(float[] table, int action, float reward) {
-
+  public void updateQtable(float[] table, int action, float[] reward) {
+    table[action] = table[action] + alpha * (reward[action] - table[action]);
   }
 }

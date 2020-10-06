@@ -1,16 +1,15 @@
 //Ian Royer
-//class for an IAL/JAL mission
-//Created: 9/2/20
-//Updated: 9/29/20
+//Made: 10-5-2020
+//Mission for building with two JAL agents
 
-public class Ialjalbuilding extends Buildmission {
+public class Jaljalbuilding extends Buildmission {
 
-  private Ial myIal;
+  private Jal my2Jal;
   private Jal myJal;
 
   //Constructor assigning agents to the mission
-  public Ialjalbuilding(Ial myIal, Jal myJal, int buildSize, int buildHeight) {
-    this.myIal = myIal;
+  public Jaljalbuilding(Jal my2Jal, Jal myJal, int buildSize, int buildHeight) {
+    this.my2Jal = my2Jal;
     this.myJal = myJal;
     this.buildSize = buildSize;
     this.buildHeight = buildHeight;
@@ -21,38 +20,38 @@ public class Ialjalbuilding extends Buildmission {
   // each agent's tables
   public void doLearnTrials() {
     int action = 0;
-    float[] checkTable = getRplaceTable(myIal);
+    float[] checkTable = getRplaceTable(my2Jal);
 
     for(int trial = 0; trial < learnTrials; trial++) {      //For each of the learning trials.....
 
-      //Do an IAL action ***************************************************************************************************************************************
-      if(myIal.lookBlock(myIal.locx, myIal.locy, myIal.locz) == "air") {      //Assess current location and change state accordingly
-        myIal.myState = Agent.State.PLACE;
+      //Do an 2JAL action ***************************************************************************************************************************************
+      if(my2Jal.lookBlock(my2Jal.locx, my2Jal.locy, my2Jal.locz) == "air") {      //Assess current location and change state accordingly
+        my2Jal.myState = Agent.State.PLACE;
       } else {
-        myIal.myState = Agent.State.MOVE;
+        my2Jal.myState = Agent.State.MOVE;
       }
 
       System.out.println("Checked Spot IAL");
 
       //Given the current state... do a random action
       action = getRandAction();
-      myIal.doAction(action);                                               //Ial does an action
-      if(myIal.myState == Agent.State.PLACE) {
-        myIal.updateQtable(myIal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz), 
-                           action, getRplaceTable(myIal));                  //Ial updates table
-        checkTable = getRplaceTable(myIal);
-        myJal.updateQtable(myJal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz),
+      my2Jal.doAction(action);                                               //2Jal does an action
+      if(my2Jal.myState == Agent.State.PLACE) {
+        my2Jal.updateQtable(my2Jal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz), 
+                           action, getRplaceTable(my2Jal));                  //2Jal updates table
+        checkTable = getRplaceTable(my2Jal);
+        myJal.updateQtable(myJal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz),
                            action, getRplaceTable(myJal));                  //Update JAL table too
 
         if((int) checkTable[action] != 10) {                                //Check if placement was wrong, if so, remove it
-          myIal.removeBlock(myIal.locx, 4 + (myIal.locy), myIal.locz);
+          my2Jal.removeBlock(my2Jal.locx, 4 + (my2Jal.locy), my2Jal.locz);
         }
       }
-      else if(myIal.myState == Agent.State.MOVE) {
-        myIal.updateQtable(myIal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
-                          action, getRmoveTable(myIal));                    //Ial updates table
-        checkTable = getRmoveTable(myIal);
-        myJal.updateQtable(myJal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
+      else if(my2Jal.myState == Agent.State.MOVE) {
+        my2Jal.updateQtable(my2Jal.getMoveTable(my2Jal.locx, my2Jal.locy, my2Jal.locz), 
+                          action, getRmoveTable(my2Jal));                    //2Jal updates table
+        checkTable = getRmoveTable(my2Jal);
+        myJal.updateQtable(myJal.getMoveTable(my2Jal.locx, my2Jal.locy, my2Jal.locz), 
                           action, getRmoveTable(myJal));                    //Update JAL table too
       }
       
@@ -72,13 +71,19 @@ public class Ialjalbuilding extends Buildmission {
       if(myJal.myState == Agent.State.PLACE) {
         myJal.updateQtable(myJal.getPlaceTable(myJal.locx, myJal.locy, myJal.locz),
                           action, getRplaceTable(myJal));                           //Jal updates table
-        
+        checkTable = getRplaceTable(myJal);
+        my2Jal.updateQtable(my2Jal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz),
+                              action, getRplaceTable(my2Jal));                      //Update 2Jal table too
+
         if((int) checkTable[action] != 10) {                                        //Check if placement was wrong, if so, remove it
           myJal.removeBlock(myJal.locx, 4 + (myJal.locy), myJal.locz);
         }
       } else if(myJal.myState == Agent.State.MOVE) {
-        myJal.updateQtable(myJal.getMoveTable(myIal.locx, myIal.locy, myIal.locz), 
+        myJal.updateQtable(myJal.getMoveTable(my2Jal.locx, my2Jal.locy, my2Jal.locz), 
                           action, getRmoveTable(myJal));                            //Jal updates table
+        checkTable = getRplaceTable(myJal);
+        my2Jal.updateQtable(my2Jal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz),
+                            action, getRplaceTable(my2Jal));                       //Update 2Jal table too
       }
 
       if(checkDone()) {
@@ -90,24 +95,24 @@ public class Ialjalbuilding extends Buildmission {
   //Performs using the complete tables
   public void doPerform() {
     
-    float[] curTable = myIal.getPlaceTable(0, 0, 0);
+    float[] curTable = myJal.getPlaceTable(0, 0, 0);
     
     while(!checkDone()) {
 
-      //Do an IAL action *****************************************************************************************************************
-      if(myIal.lookBlock(myIal.locx, myIal.locy, myIal.locz) == "air") {      //Assess current location and change state accordingly
-        myIal.myState = Agent.State.PLACE;
+      //Do a 2JAL action *****************************************************************************************************************
+      if(my2Jal.lookBlock(my2Jal.locx, my2Jal.locy, my2Jal.locz) == "air") {      //Assess current location and change state accordingly
+        my2Jal.myState = Agent.State.PLACE;
       } else {
-        myIal.myState = Agent.State.MOVE;
+        my2Jal.myState = Agent.State.MOVE;
       }
 
-      if(myIal.myState == Agent.State.PLACE) 
-        curTable = myIal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz);
-      else if(myIal.myState == Agent.State.MOVE) 
-        curTable = myIal.getMoveTable(myIal.locx, myIal.locy, myIal.locz);
+      if(my2Jal.myState == Agent.State.PLACE) 
+        curTable = my2Jal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz);
+      else if(my2Jal.myState == Agent.State.MOVE) 
+        curTable = my2Jal.getMoveTable(my2Jal.locx, my2Jal.locy, my2Jal.locz);
       
-      myIal.doAction(getMaxIndex(curTable));
-      System.out.println("IAL action done");
+      my2Jal.doAction(getMaxIndex(curTable));
+      System.out.println("2JAL action done");
 
 
       //Do a JAL action *****************************************************************************************************************
@@ -118,7 +123,7 @@ public class Ialjalbuilding extends Buildmission {
       }
 
       if(myJal.myState == Agent.State.PLACE) 
-        curTable = myJal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz);
+        curTable = myJal.getPlaceTable(my2Jal.locx, my2Jal.locy, my2Jal.locz);
       else if(myJal.myState == Agent.State.MOVE) 
         curTable = myJal.getMoveTable(myJal.locx, myJal.locy, myJal.locz);
       
@@ -136,7 +141,7 @@ public class Ialjalbuilding extends Buildmission {
     for(int y = 0; y < buildHeight; y++) {
       for(int z = 0; z < buildSize; z++) {
         for(int x = 0; x < buildSize; x++) {
-          if(myIal.lookBlock(x, y, z) == "air")
+          if(my2Jal.lookBlock(x, y, z) == "air")
             done = false;
         }
       }
@@ -151,14 +156,13 @@ public class Ialjalbuilding extends Buildmission {
     for(int x = 0; x < 3; x++) {
       for(int y = 4; y < 6; y++) {
         for(int z = 0; z < 3; z++) {
-          myIal.removeBlock(x, y, z);
+          my2Jal.removeBlock(x, y, z);
         }
       }
     }
 
-    myIal.locx = 0; myIal.locy = 0; myIal.locz = 0;
+    my2Jal.locx = 0; my2Jal.locy = 0; my2Jal.locz = 0;
     myJal.locx = 0; myJal.locy = 0; myJal.locz = 0;
   }
-  
 
 }

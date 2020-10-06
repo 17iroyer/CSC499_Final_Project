@@ -3,15 +3,14 @@
 //Created: 8/24/2020
 //Updated: 9/2/2020
 
-//Compile:   javac -cp malmojavajar.jar;gson-2.8.6.jar finalproject.java
-//Run:       java -cp malmojavajar.jar;gson-2.8.6.jar;. finalproject
+//Compile:   javac -cp malmojavajar.jar finalproject.java
+//Run:       java -cp malmojavajar.jar;. finalproject
 
 import com.microsoft.msr.malmo.*;
 import java.io.*;
 import java.nio.file.*;
 import java.util.stream.Stream;
 import java.util.Scanner;
-import com.google.gson.*;
 
 public class finalproject {
   static {
@@ -94,8 +93,6 @@ public class finalproject {
     mypool.add(info1);
     mypool.add(info2);
 
-    Gson mygson = new Gson();
-
     MissionRecordSpec mymissionrecord1 = new MissionRecordSpec("./missiondata1.tgz");
     mymissionrecord1.recordCommands();
     mymissionrecord1.recordObservations();
@@ -138,48 +135,25 @@ public class finalproject {
     System.out.println("Mission has started");
 
     //Rest of the actions go below here
-    //Or take out the loop
     Ial myIal = new Ial("The IAL", -1, 8, -1, 2, 1, agenthost1);
     Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
     Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
 
-    
-
     myIal.resetPos();
     myJal.resetPos();
 
-    curworldstate1 = agenthost1.peekWorldState();
-    System.out.println(curworldstate1.getNumberOfObservationsSinceLastState());
+    myIal.sendCommand("setPitch 90");
+    myJal.sendCommand("setPitch 90");
 
-    curworldstate1 = agenthost1.getWorldState();
+    long start = System.nanoTime();
 
-    //TimestampedStringVector myobs = curworldstate1.getObservations();
-    //String myobsstring = myobs.get(0).getText();
-    //System.out.println(myobsstring);
-    //System.out.println(mygson.fromJson(curworldstate1.getObservations(), String.class));
+    //Put things here
 
-    //do {
-       //myIal.sendCommand("tp 2 4 5");
-       myIal.sendCommand("setPitch 90");
-    //   agenthost1.sendCommand("jump 1");
-    //   agenthost2.sendCommand("move 1");
-    //   agenthost2.sendCommand("jump 1");
-    //  curworldstate1 = agenthost1.getWorldState();
-    //  curworldstate2 = agenthost2.getWorldState();
-    // }while(curworldstate1.getIsMissionRunning() && curworldstate2.getIsMissionRunning());
+    long end = System.nanoTime();
+    System.out.println("Elapsed time (ns): " + (end-start));
 
-    while(curworldstate1.getNumberOfObservationsSinceLastState() == 0)
-      curworldstate1 = agenthost1.peekWorldState();
-    System.out.println(curworldstate1.getNumberOfObservationsSinceLastState());
-    TimestampedStringVector myobs = curworldstate1.getObservations();
-    String myobsstr = curworldstate1.getObservations().get(0).getText();
-    System.out.println(myobsstr);
-
-    System.out.println(myIal.lookBlock(0,0,0));
-    Thread.sleep(30);
-    myIal.moveToHand(myIal.searchHandWood("oak"));
-    Thread.sleep(50);
-    myIal.placeBlock(2, 1);
+    agenthost1.sendCommand("setPitch 0");
+    agenthost2.sendCommand("setPitch 0");
 
     System.out.println("The mission is done");
   }

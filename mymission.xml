@@ -27,9 +27,24 @@
     <AgentStart>
       <Placement x="2.0" y="7.0" z="1.0"/>
       <Inventory>
-        <InventoryItem slot="0" type="wool" colour="WHITE" quantity="1"/>
-        <InventoryItem slot="5" type="wool" colour="RED" quantity="1"/>
-        <InventoryItem slot="8" type="planks" variant="oak" quantity="1"/>
+        <InventoryItem slot="0" type="wool" colour="WHITE" quantity="64"/>
+        <InventoryItem slot="1" type="wool" colour="ORANGE" quantity="64"/>
+        <InventoryItem slot="2" type="wool" colour="MAGENTA" quantity="64"/>
+        <InventoryItem slot="3" type="wool" colour="LIGHT_BLUE" quantity="64"/>
+        <InventoryItem slot="4" type="wool" colour="YELLOW" quantity="64"/>
+        <InventoryItem slot="5" type="wool" colour="LIME" quantity="64"/>
+        <InventoryItem slot="6" type="wool" colour="PINK" quantity="64"/>
+        <InventoryItem slot="7" type="wool" colour="GRAY" quantity="64"/>
+        <InventoryItem slot="8" type="wool" colour="SILVER" quantity="64"/>
+        <InventoryItem slot="9" type="wool" colour="CYAN" quantity="64"/>
+        <InventoryItem slot="10" type="wool" colour="PURPLE" quantity="64"/>
+        <InventoryItem slot="11" type="wool" colour="BLUE" quantity="64"/>
+        <InventoryItem slot="12" type="wool" colour="BROWN" quantity="64"/>
+        <InventoryItem slot="13" type="wool" colour="GREEN" quantity="64"/>
+        <InventoryItem slot="14" type="wool" colour="RED" quantity="64"/>
+        <InventoryItem slot="15" type="wool" colour="BLACK" quantity="64"/>
+        <InventoryItem slot="16" type="planks" variant="oak" quantity="64"/>
+        <InventoryItem slot="17" type="planks" variant="spruce" quantity="64"/>
       </Inventory>
     </AgentStart>
     <AgentHandlers>
@@ -53,6 +68,26 @@
     <Name>Agent 2</Name>
     <AgentStart>
       <Placement x="1.0" y="7.0" z="1.0"/>
+      <Inventory>
+        <InventoryItem slot="0" type="wool" colour="WHITE" quantity="64"/>
+        <InventoryItem slot="1" type="wool" colour="ORANGE" quantity="64"/>
+        <InventoryItem slot="2" type="wool" colour="MAGENTA" quantity="64"/>
+        <InventoryItem slot="3" type="wool" colour="LIGHT_BLUE" quantity="64"/>
+        <InventoryItem slot="4" type="wool" colour="YELLOW" quantity="64"/>
+        <InventoryItem slot="5" type="wool" colour="LIME" quantity="64"/>
+        <InventoryItem slot="6" type="wool" colour="PINK" quantity="64"/>
+        <InventoryItem slot="7" type="wool" colour="GRAY" quantity="64"/>
+        <InventoryItem slot="8" type="wool" colour="SILVER" quantity="64"/>
+        <InventoryItem slot="9" type="wool" colour="CYAN" quantity="64"/>
+        <InventoryItem slot="10" type="wool" colour="PURPLE" quantity="64"/>
+        <InventoryItem slot="11" type="wool" colour="BLUE" quantity="64"/>
+        <InventoryItem slot="12" type="wool" colour="BROWN" quantity="64"/>
+        <InventoryItem slot="13" type="wool" colour="GREEN" quantity="64"/>
+        <InventoryItem slot="14" type="wool" colour="RED" quantity="64"/>
+        <InventoryItem slot="15" type="wool" colour="BLACK" quantity="64"/>
+        <InventoryItem slot="16" type="planks" variant="oak" quantity="64"/>
+        <InventoryItem slot="17" type="planks" variant="spruce" quantity="64"/>
+      </Inventory>
     </AgentStart>
     <AgentHandlers>
       <ObservationFromFullStats/>

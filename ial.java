@@ -6,7 +6,7 @@
 import com.microsoft.msr.malmo.*;
 
 public class Ial extends Agent {
-  
+
   //Constructor for a basic agent
   public Ial(String name, int x, int y, int z, int buildSize, int buildHeight, AgentHost host) {
     //Set the instance vairables
@@ -39,10 +39,12 @@ public class Ial extends Agent {
       plau2_0 = new float[18]; plau2_1 = new float[18]; plau0_2 = new float[18];
       plau1_2 = new float[18]; plau2_2 = new float[18];
     }
+
+    myTable = pla0_0;
   }
 
-    //Will update the table according to the appropriate action taken and reward
-    public void updateQtable(float[] table, int action, float reward) {
-
-    }
+  //Will update the table according to the appropriate action taken and reward
+  public void updateQtable(float[] table, int action, float[] reward) {
+    table[action] = table[action] + alpha * (reward[action] - table[action]);
+  }
 }

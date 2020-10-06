@@ -25,11 +25,14 @@ public class Agent {
                   plau0_1, plau1_1, plau2_1,
                   plau0_2, plau1_2, plau2_2;
   protected float alpha = (float) 0.8;
+  public State myState = State.PLACE;
+  public float[] myTable;
+  public int locx = 0;
+  public int locy = 0;
+  public int locz = 0;
 
-  enum BlockPlace {
-    WHITE, ORANGE, MAGENTA, LIGHTB, YELLOW, LIME,
-    PINK, GRAY, LIGHTG, CYAN, PURPLE, BLUE,
-    BROWN, GREEN, RED, BLACK, OAK, SPRUCE;
+  enum State {
+    PLACE, MOVE;
   }
 
   //Places currently held block at location
@@ -52,7 +55,7 @@ public class Agent {
     String[] blockArray = new String[18];                 //Split Json string into array of blocks
     blockArray = grid.split("\",\"");
     
-    int arrayPos = ((x+1) * (z+1)) + (level*9);         //Calculate array position based on input
+    int arrayPos = (x + (3*z)) + (level*9);         //Calculate array position based on input
 
     return blockArray[arrayPos];                        //Return name of block in position
   }
@@ -65,6 +68,115 @@ public class Agent {
   //Included for testing and future development
   public void sendCommand(String command) {
     host.sendCommand(command);
+  }
+
+  //Given an action, perform based  on current state
+  public void doAction(int action) {
+    if(myState == State.PLACE) {
+
+      switch(action) {
+        case 0:
+          moveToHand(searchHandWool("WHITE"));
+          placeBlock(locx, locz); break;
+        case 1:
+          moveToHand(searchHandWool("ORANGE"));
+          placeBlock(locx, locz); break;
+        case 2:
+          moveToHand(searchHandWool("MAGENTA"));
+          placeBlock(locx, locz); break;
+        case 3:
+          moveToHand(searchHandWool("LIGHT_BLUE"));
+          placeBlock(locx, locz); break;
+        case 4:
+          moveToHand(searchHandWool("YELLOW"));
+          placeBlock(locx, locz); break;
+        case 5:
+          moveToHand(searchHandWool("LIME"));
+          placeBlock(locx, locz); break;
+        case 6:
+          moveToHand(searchHandWool("PINK"));
+          placeBlock(locx, locz); break;
+        case 7:
+          moveToHand(searchHandWool("GRAY"));
+          placeBlock(locx, locz); break;
+        case 8:
+          moveToHand(searchHandWool("SILVER"));
+          placeBlock(locx, locz); break;
+        case 9:
+          moveToHand(searchHandWool("CYAN"));
+          placeBlock(locx, locz); break;
+        case 10:
+          moveToHand(searchHandWool("PURPLE"));
+          placeBlock(locx, locz); break;
+        case 11:
+          moveToHand(searchHandWool("BLUE"));
+          placeBlock(locx, locz); break;
+        case 12:
+          moveToHand(searchHandWool("BROWN"));
+          placeBlock(locx, locz); break;
+        case 13:
+          moveToHand(searchHandWool("GREEN"));
+          placeBlock(locx, locz); break;
+        case 14:
+          moveToHand(searchHandWool("RED"));
+          placeBlock(locx, locz); break;
+        case 15:
+          moveToHand(searchHandWool("BLACK"));
+          placeBlock(locx, locz); break;
+        case 16:
+          moveToHand(searchHandWood("oak"));
+          placeBlock(locx, locz); break;
+        case 17:
+          moveToHand(searchHandWood("spruce"));
+          placeBlock(locx, locz); break;
+        default:
+          break;
+      }
+
+    } else if(myState == State.MOVE) {
+
+      switch(action) {
+        case 0:
+          locx = 0; locy = 0; locz = 0; break;
+        case 1:
+          locx = 1; locy = 0; locz = 0; break;
+        case 2:
+          locx = 2; locy = 0; locz = 0; break;
+        case 3:
+          locx = 0; locy = 0; locz = 1; break;
+        case 4:
+          locx = 1; locy = 0; locz = 1; break;
+        case 5:
+          locx = 2; locy = 0; locz = 1; break;
+        case 6:
+          locx = 0; locy = 0; locz = 2; break;
+        case 7:
+          locx = 1; locy = 0; locz = 2; break;
+        case 8:
+          locx = 2; locy = 0; locz = 2; break;
+        case 9:
+          locx = 0; locy = 1; locz = 0; break;
+        case 10:
+          locx = 1; locy = 1; locz = 0; break;
+        case 11:
+          locx = 2; locy = 1; locz = 0; break;
+        case 12:
+          locx = 0; locy = 1; locz = 1; break;
+        case 13:
+          locx = 1; locy = 1; locz = 1; break;
+        case 14:
+          locx = 2; locy = 1; locz = 1; break;
+        case 15:
+          locx = 0; locy = 1; locz = 2; break;
+        case 16:
+          locx = 1; locy = 1; locz = 2; break;
+        case 17:
+          locx = 2; locy = 1; locz = 2; break;
+        default:
+          break;
+      }
+
+    }
   }
 
   //Moves the agent back to it's designated starting position
@@ -118,11 +230,145 @@ public class Agent {
   }
 
   //Calls thread.sleep() for readability
-  private void wait(int ms) {
+  public void wait(int ms) {
     try {
       Thread.sleep(ms);
     } catch(Exception e) {
       System.out.println("Interrupted");
     }
+  }
+
+  //returns the correct placement table for the current location
+  public float[] getPlaceTable(int locx, int locy, int locz) {
+    switch(locx) {
+      case 0:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return pla0_0; 
+              case 1: return pla0_1;
+              case 2: return pla0_2;
+            }
+          break;
+          case 1:
+            switch(locz)
+            {
+              case 0: return plau0_0;
+              case 1: return plau0_1;
+              case 2: return plau0_2;
+            }
+          break;
+        }
+      break;
+      case 1:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return pla1_0;
+              case 1: return pla1_1;
+              case 2: return pla1_2;
+            }
+          break;
+          case 1:
+            switch(locz)
+            {
+              case 0: return plau1_0;
+              case 1: return plau1_1;
+              case 2: return plau1_2;
+            }
+          break;
+        }
+      break;
+      case 2:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return pla2_0;
+              case 1: return pla2_1;
+              case 2: return pla2_2;
+            }
+          break;
+          case 1:
+             switch(locz)
+            {
+              case 0: return plau2_0;
+              case 1: return plau2_1;
+              case 2: return plau2_2;
+            }
+          break;
+        }
+      break;
+    }
+     return null;
+  }
+  
+  //Returns the correct movement table for the current location 
+  public float[] getMoveTable(int locx, int locy, int locz) {
+    switch(locx) {
+      case 0:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return mov0_0;
+              case 1: return mov0_1;
+              case 2: return mov0_2;
+            }
+          break;
+          case 1:
+            switch(locz)
+            {
+              case 0: return movu0_0;
+              case 1: return movu0_1;
+              case 2: return movu0_2;
+            }
+          break;
+        }
+      break;
+      case 1:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return mov1_0;
+              case 1: return mov1_1;
+              case 2: return mov1_2;
+            }
+          break;
+          case 1:
+            switch(locz)
+            {
+              case 0: return movu1_0;
+              case 1: return movu1_1;
+              case 2: return movu1_2;
+            }
+          break;
+        }
+      break;
+      case 2:
+        switch(locy) {
+          case 0:
+            switch(locz)
+            {
+              case 0: return mov2_0;
+              case 1: return mov2_1;
+              case 2: return mov2_2;
+            }
+          break;
+          case 1:
+            switch(locz)
+            {
+              case 0: return movu2_0;
+              case 1: return movu2_1;
+              case 2: return movu2_2;
+            }
+          break;
+        }
+      break;
+    }
+     return null;
   }
 }
