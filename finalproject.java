@@ -135,9 +135,9 @@ public class finalproject {
     System.out.println("Mission has started");
 
     //Rest of the actions go below here
-    Ial myIal = new Ial("The IAL", -1, 8, -1, 2, 1, agenthost1);
-    Jal myJal = new Jal("The JAL", -2, 8, -1, 2, 1, agenthost2);
-    Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 2, 1); 
+    Ial myIal = new Ial("The IAL", -4, 5, -5, 3, 0, agenthost1);
+    Jal myJal = new Jal("The JAL", -5, 5, -5, 3, 0, agenthost2);
+    Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 3, 0); 
 
     myIal.resetPos();
     myJal.resetPos();
@@ -148,6 +148,26 @@ public class finalproject {
     long start = System.nanoTime();
 
     //Put things here
+    buildmission.clearAreaReset();              //Make sure area is free
+    buildmission.doLearnTrials();
+    System.out.println("Starting performance");
+    myIal.wait(1000);
+    buildmission.clearAreaReset();
+
+    
+    for(int y = 0; y < 1; y++) {
+      for(int x = 0; x < 3; x++) {
+        for(int z = 0; z < 3; z++) {
+          System.out.print("("+x+", "+y+", "+z+"): ");
+          float[] temp = myJal.getMoveTable(x, y, z);
+          for(int i = 0; i < 18; i++) {
+            System.out.print(temp[i] + " ");
+          }
+          System.out.println("");
+        }
+      }
+    }
+    buildmission.doPerform();
 
     long end = System.nanoTime();
     System.out.println("Elapsed time (ns): " + (end-start));

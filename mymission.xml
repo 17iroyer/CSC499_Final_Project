@@ -17,7 +17,7 @@
      </ServerInitialConditions>
     <ServerHandlers>
       <FlatWorldGenerator generatorString="3;7,2*3,1;1;village"/>
-      <ServerQuitFromTimeUp timeLimitMs="10000"/>
+      <ServerQuitFromTimeUp timeLimitMs="200000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
@@ -25,7 +25,7 @@
   <AgentSection mode = "Survival">
     <Name>Agent 1</Name>
     <AgentStart>
-      <Placement x="2.0" y="7.0" z="1.0"/>
+      <Placement x="-4.0" y="7.0" z="-5.0"/>
       <Inventory>
         <InventoryItem slot="0" type="wool" colour="WHITE" quantity="64"/>
         <InventoryItem slot="1" type="wool" colour="ORANGE" quantity="64"/>
@@ -67,7 +67,7 @@
   <AgentSection mode = "Survival">
     <Name>Agent 2</Name>
     <AgentStart>
-      <Placement x="1.0" y="7.0" z="1.0"/>
+      <Placement x="-5.0" y="7.0" z="-5.0"/>
       <Inventory>
         <InventoryItem slot="0" type="wool" colour="WHITE" quantity="64"/>
         <InventoryItem slot="1" type="wool" colour="ORANGE" quantity="64"/>

@@ -3,6 +3,7 @@
 //Made: 10-5-2020
 
 import com.microsoft.msr.malmo.*;
+import java.util.Random;
 
 public class Buildmission {
 
@@ -11,24 +12,11 @@ public class Buildmission {
   public int buildHeight;
   
   //Reward table for moving the agents
-  public float[] rmov0_0 =  {-10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov1_0 =  {1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov2_0 =  {1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov0_1 =  {1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov1_1 =  {1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov2_1 =  {1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov0_2 =  {1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov1_2 =  {1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rmov2_2 =  {1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0, 0};
-  public float[] rmovu0_0 = {1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0, 0};
-  public float[] rmovu1_0 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0, 0};
-  public float[] rmovu2_0 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0, 0};
-  public float[] rmovu0_1 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0, 0};
-  public float[] rmovu1_1 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1, 0};
-  public float[] rmovu2_1 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10, 1};
-  public float[] rmovu0_2 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10, 10};
-  public float[] rmovu1_2 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10, 10};
-  public float[] rmovu2_2 = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -10};
+  public float[] rmov0_0, rmov1_0, rmov2_0, rmov0_1,
+                 rmov1_1, rmov2_1, rmov0_2, rmov1_2,
+                 rmov2_2, rmovu0_0, rmovu1_0, rmovu2_0,
+                 rmovu0_1, rmovu1_1, rmovu2_1, rmovu0_2,
+                 rmovu1_2, rmovu2_2;
   
   //Reward table for placing blocks as the agent
   public float[] rpla0_0 =  {10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -187,16 +175,22 @@ public class Buildmission {
   
   //Returns a random action (ie random array location)
   public int getRandAction() {
-    int action = (int) Math.random()*(((buildSize^2)-1) + 0 + 1);
+    Random r = new Random();
+    int action = 0;
 
-    if(buildHeight == 2) {
-      if(((int) Math.random()*2) == 1 && buildSize == 2)
-        action += 4;
-      else if(((int) Math.random()*2) == 1 && buildSize == 3)
-        action += 9;
+    if(buildSize == 2) {
+      action = r.nextInt(2);
+      if(r.nextInt(2) == 1)
+        action += 3;
+    } else if(buildSize == 3) {
+      action = r.nextInt(9);
     }
 
-    return (int) Math.random()*((buildSize^2) + (9*(buildHeight-1)) + 1);
+    
+    if(buildHeight == 1 && r.nextInt(2) == 1) 
+      action += 9;
+
+    return action;
   }
 
   //Returns the max index of an array
@@ -205,7 +199,7 @@ public class Buildmission {
     int maxInd = 0;
     float maxVal = (float) 0.0;
     for(int i = 0; i < 18; i++) {
-      if(table[i] >= maxVal) {
+      if(table[i] > maxVal) {
         maxInd = i;
         maxVal = table[i];
       }

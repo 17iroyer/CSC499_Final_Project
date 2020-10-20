@@ -37,10 +37,12 @@ public class Agent {
 
   //Places currently held block at location
   public void placeBlock(int x, int z){
-    host.sendCommand("tp " + x + " 7 " + z);
+    host.sendCommand("tp " + x + ".5 5 " + z + ".5");
     wait(500);
     host.sendCommand("jumpuse");
+    wait(350);
     resetPos();
+    System.out.println("Made to placeblock");
   }
 
   //Looks at the block at relative location and returns name of it

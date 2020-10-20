@@ -45,6 +45,7 @@ public class Ial extends Agent {
 
   //Will update the table according to the appropriate action taken and reward
   public void updateQtable(float[] table, int action, float[] reward) {
-    table[action] = table[action] + alpha * (reward[action] - table[action]);
+    System.out.println(reward[action]);
+    table[action] = table[action] + (alpha * (reward[action] - table[action]));
   }
 }
