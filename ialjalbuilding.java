@@ -1,7 +1,7 @@
 //Ian Royer
 //class for an IAL/JAL mission
 //Created: 9/2/20
-//Updated: 9/29/20
+//Updated: 10/20/20
 
 public class Ialjalbuilding extends Buildmission {
 
@@ -147,18 +147,13 @@ public class Ialjalbuilding extends Buildmission {
     float[] curTable = myIal.getPlaceTable(0, 0, 0);
   
     while(checkNotDone()) {
-      System.out.println("Yeet");
       myIal.wait(350);
       //Do an IAL action *****************************************************************************************************************
       if(myIal.lookBlock(myIal.locx, myIal.locy, myIal.locz).equals("air")) {      //Assess current location and change state accordingly
         myIal.myState = Agent.State.PLACE;
-        System.out.print("Placing...");
       } else {
         myIal.myState = Agent.State.MOVE;
-        System.out.print("Moving...");
       }
-
-      System.out.print(myIal.locx + " " + myIal.locy + " " + myIal.locz);
 
       if(myIal.myState == Agent.State.PLACE) 
         curTable = myIal.getPlaceTable(myIal.locx, myIal.locy, myIal.locz);
@@ -199,9 +194,7 @@ public class Ialjalbuilding extends Buildmission {
     for(int y = 0; y < buildHeight+1; y++) {
       for(int z = 0; z < buildSize; z++) {
         for(int x = 0; x < buildSize; x++) {
-          System.out.println("Yote");
           if(myIal.lookBlock(x, y, z).equals("air")) {
-            System.out.println("Sming");
             return true;
           }
         }
@@ -214,9 +207,9 @@ public class Ialjalbuilding extends Buildmission {
   //Will clean area of the environment
   //Also resets the agents currently observed location
   public void clearAreaReset() {
-    for(int x = 0; x < 5; x++) {
-      for(int y = 4; y < 10; y++) {
-        for(int z = 0; z < 5; z++) {
+    for(int x = 0; x < buildSize; x++) {
+      for(int y = 4; y < 7; y++) {
+        for(int z = 0; z < buildSize; z++) {
           myIal.removeBlock(x, y, z);
         }
       }
