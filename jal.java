@@ -28,11 +28,11 @@ public class Jal extends Agent {
       pla2_0 = new float[18]; pla2_1 = new float[18]; pla0_2 = new float[18];
       pla1_2 = new float[18]; pla2_2 = new float[18];
     }
-    if(buildSize == 2 && buildHeight == 2) {
+    if(buildSize >= 2 && buildHeight == 1) {
       movu0_0 = new float[18]; movu1_0 = new float[18]; movu0_1 = new float[18]; movu1_1 = new float[18];
       plau0_0 = new float[18]; plau1_0 = new float[18]; plau0_1 = new float[18]; plau1_1 = new float[18];
     }
-    if(buildSize == 3 && buildHeight == 2) {
+    if(buildSize == 3 && buildHeight == 1) {
       movu2_0 = new float[18]; movu2_1 = new float[18]; movu0_2 = new float[18];
       movu1_2 = new float[18]; movu2_2 = new float[18];
       plau2_0 = new float[18]; plau2_1 = new float[18]; plau0_2 = new float[18];
@@ -44,7 +44,8 @@ public class Jal extends Agent {
 
   //Will update the table according to the appropriate action taken and reward
   public void updateQtable(float[] table, int action, float[] reward) {
-    System.out.println(reward[action]);
+    //System.out.println(table[action]);
+    //System.out.println("Boop" + reward[action]);
     table[action] = table[action] + alpha * (reward[action] - table[action]);
   }
 }

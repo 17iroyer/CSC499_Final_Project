@@ -135,42 +135,36 @@ public class finalproject {
     System.out.println("Mission has started");
 
     //Rest of the actions go below here
-    Ial myIal = new Ial("The IAL", -4, 5, -5, 3, 0, agenthost1);
-    Jal myJal = new Jal("The JAL", -5, 5, -5, 3, 0, agenthost2);
-    Ialjalbuilding buildmission = new Ialjalbuilding(myIal, myJal, 3, 0); 
-
-    myIal.resetPos();
-    myJal.resetPos();
-
-    myIal.sendCommand("setPitch 90");
-    myJal.sendCommand("setPitch 90");
-
-    long start = System.nanoTime();
 
     //Put things here
-    buildmission.clearAreaReset();              //Make sure area is free
-    buildmission.doLearnTrials();
-    System.out.println("Starting performance");
-    myIal.wait(1000);
-    buildmission.clearAreaReset();
+    for(int i = 61; i <= 125; i++) {
+      Jal my2Jal = new Jal("The 2JAL", -4, 5, -5, 2, 1, agenthost1);                   //<-----------------
+      Jal myJal = new Jal("The JAL", -5, 5, -5, 2, 1, agenthost2);                  //<-----------------
+      Jaljalbuilding buildmission = new Jaljalbuilding(my2Jal, myJal, 2, 1);         //<-----------------
 
-    
-    for(int y = 0; y < 1; y++) {
-      for(int x = 0; x < 3; x++) {
-        for(int z = 0; z < 3; z++) {
-          System.out.print("("+x+", "+y+", "+z+"): ");
-          float[] temp = myJal.getMoveTable(x, y, z);
-          for(int i = 0; i < 18; i++) {
-            System.out.print(temp[i] + " ");
-          }
-          System.out.println("");
-        }
-      }
+      my2Jal.resetPos();
+      myJal.resetPos();
+
+      agenthost1.sendCommand("setPitch 90");
+      agenthost2.sendCommand("setPitch 90");
+
+      buildmission.learnTrials = i;
+      buildmission.clearAreaReset();              //Make sure area is free
+      buildmission.doLearnTrials();
+      //System.out.println("Starting performance");
+      myJal.wait(250);
+      buildmission.clearAreaReset();
+      long start = System.nanoTime();
+      buildmission.doPerform();
+      long end = System.nanoTime();
+      System.out.print(i + "       ");
+      System.out.print(buildmission.blocksPut + "     ");
+      System.out.println(end-start);
+
+      buildmission.checkNotDone();
+      if(buildmission.blocksPut >= 8)                               //<------------------ change this
+        break;
     }
-    buildmission.doPerform();
-
-    long end = System.nanoTime();
-    System.out.println("Elapsed time (ns): " + (end-start));
 
     agenthost1.sendCommand("setPitch 0");
     agenthost2.sendCommand("setPitch 0");

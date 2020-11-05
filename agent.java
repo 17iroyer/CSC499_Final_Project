@@ -18,7 +18,7 @@ public class Agent {
                   movu0_0, movu1_0, movu2_0,
                   movu0_1, movu1_1, movu2_1,
                   movu0_2, movu1_2, movu2_2;
-  protected float[] pla0_0, pla1_0, pla2_0,
+  public float[] pla0_0, pla1_0, pla2_0,
                   pla0_1, pla1_1, pla2_1,
                   pla0_2, pla1_2, pla2_2,
                   plau0_0, plau1_0, plau2_0,
@@ -42,7 +42,7 @@ public class Agent {
     host.sendCommand("jumpuse");
     wait(350);
     resetPos();
-    System.out.println("Made to placeblock");
+    //System.out.println("Made to placeblock");
   }
 
   //Looks at the block at relative location and returns name of it
@@ -304,7 +304,8 @@ public class Agent {
         }
       break;
     }
-     return null;
+    //System.out.println("Zoingo");
+    return null;
   }
   
   //Returns the correct movement table for the current location 
@@ -371,6 +372,7 @@ public class Agent {
         }
       break;
     }
-     return null;
+    //System.out.println("Zoingo");
+    return null;
   }
 }

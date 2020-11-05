@@ -10,6 +10,7 @@ public class Buildmission {
   public int learnTrials = 50;
   public int buildSize;
   public int buildHeight;
+  public int blocksPut = 0;
   
   //Reward table for moving the agents
   public float[] rmov0_0, rmov1_0, rmov2_0, rmov0_1,
@@ -19,27 +20,29 @@ public class Buildmission {
                  rmovu1_2, rmovu2_2;
   
   //Reward table for placing blocks as the agent
-  public float[] rpla0_0 =  {10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla1_0 =  {0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla2_0 =  {0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla0_1 =  {0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla1_1 =  {0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla2_1 =  {0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla0_2 =  {0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla1_2 =  {0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rpla2_2 =  {0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rplau0_0 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rplau1_0 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 0};
-  public float[] rplau2_0 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0};
-  public float[] rplau0_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0, 0};
-  public float[] rplau1_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0, 0};
-  public float[] rplau2_1 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0, 0};
-  public float[] rplau0_2 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0, 0};
-  public float[] rplau1_2 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 0};
-  public float[] rplau2_2 = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10};
+  public float[] rpla0_0 =  {1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla1_0 =  {-1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla2_0 =  {-1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla0_1 =  {-1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla1_1 =  {-1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla2_1 =  {-1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla0_2 =  {-1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla1_2 =  {-1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rpla2_2 =  {-1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rplau0_0 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rplau1_0 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1, -1};
+  public float[] rplau2_0 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1, -1};
+  public float[] rplau0_1 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1, -1};
+  public float[] rplau1_1 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1, -1};
+  public float[] rplau2_1 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1, -1};
+  public float[] rplau0_2 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1, -1};
+  public float[] rplau1_2 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1, -1};
+  public float[] rplau2_2 = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, 1};
 
   //Returns the correct R-table for the agent.
   public float[] getRmoveTable(Agent myAgent) {
+    //System.out.println("move" +myAgent.locx+myAgent.locy+myAgent.locz);
+
     switch(myAgent.locx) {
       case 0:
         switch(myAgent.locy) {
@@ -102,11 +105,13 @@ public class Buildmission {
         }
       break;
     }
+    //System.out.println("Zoingo r");
      return null;
   }
 
   //Returns the correct R-table for the agent
   public float[] getRplaceTable(Agent myAgent) {
+    //System.out.println("place" + myAgent.locx+myAgent.locy+myAgent.locz);
     switch(myAgent.locx) {
       case 0:
         switch(myAgent.locy) {
@@ -169,6 +174,7 @@ public class Buildmission {
         }
       break;
     }
+    //System.out.println("Zoingo r");
      return null;
   }
 
@@ -190,6 +196,7 @@ public class Buildmission {
     if(buildHeight == 1 && r.nextInt(2) == 1) 
       action += 9;
 
+    //System.out.println(action);
     return action;
   }
 
@@ -206,5 +213,15 @@ public class Buildmission {
     }
 
     return maxInd;
+  }
+
+  public float getMaxValue(float[] table) {
+    float maxVal = (float) -10000.0;
+    for(int i = 0; i < 18; i++) {
+      if(table[i] > maxVal)
+        maxVal = table[i];
+    }
+
+    return maxVal;
   }
 }

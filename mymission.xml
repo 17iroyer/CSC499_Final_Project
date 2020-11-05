@@ -17,7 +17,7 @@
      </ServerInitialConditions>
     <ServerHandlers>
       <FlatWorldGenerator generatorString="3;7,2*3,1;1;village"/>
-      <ServerQuitFromTimeUp timeLimitMs="200000"/>
+      <ServerQuitFromTimeUp timeLimitMs="15000000000"/>
       <ServerQuitWhenAnyAgentFinishes/>
     </ServerHandlers>
   </ServerSection>
